@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.ifeb2.scdevlog.service.impl.ScLogServiceImpl,\
+  com.ifeb2.scdevlog.aspect.LogAspect

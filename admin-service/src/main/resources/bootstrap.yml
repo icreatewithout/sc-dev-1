@@ -1,0 +1,35 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: admin-service
+  cloud:
+    discovery:
+      enabled: true
+    nacos:
+      username: nacos
+      password: nacos
+      discovery:
+        enabled: true
+        server-addr: 192.168.3.122:8848
+        service: ${spring.application.name}
+        heart-beat-interval: 5000
+        heart-beat-timeout: 20000
+        # 开启本地配置读取
+        naming-load-cache-at-start: false
+        namespace: dev
+        cluster-name: cluster-dev
+        group: sc-dev
+        register-enabled: true
+      config:
+        server-addr: 192.168.3.122:8848
+        file-extension: yml
+        namespace: dev
+        group: DEV_GROUP
+        timeout: 3000
+        config-long-poll-timeout: 10000
+        config-retry-time: 2000
+        max-retry: 3
+        refresh-enabled: true
+
+

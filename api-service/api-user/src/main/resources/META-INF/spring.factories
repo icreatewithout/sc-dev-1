@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.ifeb2.apiuser.feign.fallback.FeignUserServiceFallback

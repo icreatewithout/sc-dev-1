@@ -1,0 +1,11 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.ifeb2.scdevcore.redis.RedisConfig,\
+  com.ifeb2.scdevcore.configuration.AuditorAwareConfiguration,\
+  com.ifeb2.scdevcore.configuration.SchedulingConfiguration,\
+  com.ifeb2.scdevcore.configuration.PropertiesConfiguration,\
+  com.ifeb2.scdevcore.component.UserArgumentsResolver,\
+  com.ifeb2.scdevcore.configuration.WebConfigurer,\
+  com.ifeb2.scdevcore.component.AutoIdentityGenerator,\
+  com.ifeb2.scdevcore.component.AuditorAwareComponent,\
+  com.ifeb2.scdevcore.jjwt.JJwtService,\
+  com.ifeb2.scdevcore.captcha.CaptchaService

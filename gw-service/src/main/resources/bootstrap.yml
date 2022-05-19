@@ -1,0 +1,32 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: gw-service
+  cloud:
+    discovery:
+      enabled: true
+    nacos:
+      username: nacos
+      password: nacos
+      discovery:
+        server-addr: 192.168.3.122:8848
+        heart-beat-interval: 5000
+        heart-beat-timeout: 15000
+        cluster-name: cluster-dev
+        namespace: dev
+        group: sc-dev
+        register-enabled: true
+        watch:
+          enabled: true
+        watch-delay: 30000
+      config:
+        server-addr: 192.168.3.122:8848
+        file-extension: yml
+        namespace: dev
+        group: DEV_GROUP
+        timeout: 3000
+        config-long-poll-timeout: 10000
+        config-retry-time: 2000
+        max-retry: 3
+        refresh-enabled: true

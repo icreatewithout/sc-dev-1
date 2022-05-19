@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.ifeb2.scdevsecurity.handler.LogoutHandler,\
+  com.ifeb2.scdevsecurity.handler.RequestAccessDeniedHandler,\
+  com.ifeb2.scdevsecurity.handler.RequestAuthenticationEntryPoint,\
+  com.ifeb2.scdevsecurity.SecurityConfigurer
