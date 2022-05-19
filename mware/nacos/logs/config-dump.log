@@ -1,0 +1,14 @@
+2022-05-14 23:58:42,923 INFO [dump-all-ok] seata.properties+SEATA_GROUP, 1652538223000, length=2720, md5=5aff05605536b27874fb2510fbf09573
+
+2022-05-14 23:58:42,925 INFO [dump-all-ok] user-service-dev.yml+DEV_GROUP, 1652530458000, length=5593, md5=1e83832d1b8fdb3470d1fda556ce977b
+
+2022-05-14 23:58:42,926 INFO [dump-all-ok] file-service-dev.yml+DEV_GROUP, 1652496529000, length=5005, md5=432fe645225da45c20d9ba6ae0a8c6ae
+
+2022-05-14 23:58:42,927 INFO [dump-all-ok] auth-service-dev.yml+DEV_GROUP, 1652530857000, length=4856, md5=6a1754d715c1b865288aec0412cab566
+
+2022-05-14 23:58:42,927 INFO [dump-all-ok] gw-service-dev.yml+DEV_GROUP, 1652531170000, length=2227, md5=4140fbd726afbade13d9a5ee977ce189
+
+2022-05-14 23:58:42,928 INFO [dump-all-ok] test-service-dev.yml+DEV_GROUP, 1652531225000, length=3702, md5=cb64db4670278f2f1f4cc8a527f2d470
+
+2022-05-14 23:58:42,928 INFO [dump-all-ok] admin-service-dev.yml+DEV_GROUP, 1652531299000, length=424, md5=7900c48ae4f2c18e46b7e688bcaedc76
+

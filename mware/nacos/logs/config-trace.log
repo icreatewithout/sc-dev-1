@@ -1,0 +1,4 @@
+2022-05-14 23:59:09,233|192.168.3.122|seata.properties|SEATA_GROUP|dev|unknown|1652538223000|pull|ok|5726233|192.168.3.122|false
+2022-05-14 23:59:09,344|192.168.3.122|store.file.sessionReloadReadSize|SEATA_GROUP|dev|unknown|-1|pull|not-found|-1|192.168.3.122|false
+2022-05-14 23:59:09,391|192.168.3.122|store.publicKey|SEATA_GROUP|dev|unknown|-1|pull|not-found|-1|192.168.3.122|false
+2022-05-14 23:59:09,808|192.168.3.122|server.enableCheckAuth|SEATA_GROUP|dev|unknown|-1|pull|not-found|-1|192.168.3.122|false

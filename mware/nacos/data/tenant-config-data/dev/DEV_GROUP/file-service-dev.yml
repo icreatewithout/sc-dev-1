@@ -1,0 +1,167 @@
+server:
+  port: 8679
+logging:
+  file:
+    path: ../sc-dev/logs/${spring.application.name}
+    name: ../sc-dev/logs/${spring.application.name}/${spring.application.name}.log
+  level:
+    org.springframework: info
+    com.ifeb2: debug
+feign:
+  circuitbreaker:
+    enabled: true
+  compression:
+    request:
+      enabled: true
+      mime-types: text/xml,application/xml,application/json
+      min-request-size: 2048
+    response:
+      enabled: true
+  httpclient:
+    enabled: false
+  okhttp:
+    enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+spring:
+  jpa:
+    database: mysql
+    show-sql: true
+    generate-ddl: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      use-new-id-generator-mappings: true
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+    properties:
+      format_sql: true
+      show_sql: true
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.3.122:3306/sc_file?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+    username: test
+    password: Root@123
+    hikari:
+      pool-name: hikari_pool
+      auto-commit: true
+      max-lifetime: 30000
+      idle-timeout: 30000
+      maximum-pool-size: 25
+      minimum-idle: 10
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+  redis:
+    port: 6379
+    host: localhost
+    database: 6
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: admin
+    password: admin
+  sleuth:
+    sampler:
+      # 采样率的概率，100%采样
+      probability: 1.0
+      # 每秒采样数字最高为1000
+      rate: 1000
+  zipkin:
+    sender:
+      type: rabbit
+    rabbitmq:
+      addresses: 127.0.0.1:5672
+      queue: zipkin
+    base-url: http://localhost:9411/
+  cloud:
+    stream:
+      binders:
+        my-rabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: localhost
+                port: 5672
+                username: admin
+                password: admin
+      bindings:
+        recordLog-out-0:
+          destination: record-log-topic
+          content-type: application/json
+          binder: my-rabbit
+    alibaba:
+      seata:
+        tx-service-group: sc_test_tx_group
+  #### admin-client
+  boot:
+    admin:
+      client:
+        username: admin
+        password: admin
+seata:
+  application-id: ${spring.application.name}
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 192.168.3.122:8848
+      namespace: dev
+      group: sc-dev
+      cluster: cluster-dev
+      username: nacos
+      password: nacos
+  service:
+    vgroup-mapping:
+      sc_test_tx_group: cluster-dev
+###### 测试刷新
+test:
+  name: abcd
+###### minio
+minio:
+  bucket: sc-dev-bucket
+  endpoint: http://127.0.0.1:9000/
+  accessKey: root
+  secretKey: Root@123
+  http: http://127.0.0.1:8500/file/load/
+  down: http://127.0.0.1:8500/file/down/
+rsa:
+  public_key: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCmQ1vUdu0wsEv9MrZaiSfZwLpugOC+BvXgiOK4AMlppwfOswzA4OXkjf6BoBqFuZ/da1chXHnek19kTja4Sh4WtzG1ox33BEf9CS9dpxIskzVcnWEd313ruRLjImcr7DolQTYxMmEFV0l6HxuM52+ymQqKlPEO5oOYK+D74bFQpwIDAQAB
+  private_key: MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAKZDW9R27TCwS/0ytlqJJ9nAum6A4L4G9eCI4rgAyWmnB86zDMDg5eSN/oGgGoW5n91rVyFced6TX2RONrhKHha3MbWjHfcER/0JL12nEiyTNVydYR3fXeu5EuMiZyvsOiVBNjEyYQVXSXofG4znb7KZCoqU8Q7mg5gr4PvhsVCnAgMBAAECgYAfhshD6mUhhVxzX4lac4V98eCoEYIMJm+7KtmqwGNwyD5fwG3bqQmOpCotVDmTP9aDetYjulBVlyZQc9BGc69umsg+Mci1UeolDqsUMMGNNLdNzFozuxCQh3eai3gCmoQPL3LXeGBdyBfenyoA6mXpLuvdrrAQCnu5nq7sZraKsQJBAN6nh3qtaiCPuoCGLEIZ2wn7b9Zr1V8W8plhxtmXhDtuMKdcSrN6dZjTR5DprQj112WbTFdR/XTiHEhi3RRF7HkCQQC/KdADlnPovJYngc7d1llw6EvAbYaF6mda+g5Q4AKcCd2UeVPrh4duvubehewOYBLDbf6i20SQBWSvLWLPv54fAkApbX51wwJ2IIgRFeXyPqFU0CXU/adr0/c7tserANgnvq7q1O9JScXLs7QjMHdzrVpwm16u+KByOQgOJ+b+uKvxAkB34LarqUvipXDcMZESmHraTTJD5+s2S3qpGKqlmPTJ+X3UwAkaaJFLp7eL0BvqH+FkYLQQWMS0NE2hdSrD8PwtAkEAsLCGBLkjB1DIIM0IEorTXk7DI+ALPYL4daGXkbEkTj27qsmJzS0K95A+jGi9QxGfmrUEjQ4op22a2nQ96UYOvg==
+login:
+  single-login: false
+  code-type: arithmetic
+  expiration: 2
+  width: 111
+  height: 36
+  length: 2
+  font-name:
+  font-size: 25
+###### jjwt
+jwt:
+  header: Authorization
+  bearer: Bearer
+  base64Secret: XrBS5nKinNYp7n+YQ47OIR+J7i97twoNl1kbybCZqftex9SBwJt8lDvtgSAyt2+edkPnJ1AidgsS/jqZClMkamSNILNaOVnG/URSdEFPdeJp9BhEOvlMPGC7Phu8tcGrm4b9xRYYmQG2avCfNSQiR1h80o5zoMf7zNWkTif1y8w=
+  expired: 43200
+  online-key: online-id-
+  detect: 10
+  renew: 30
+springfox:
+  documentation:
+    enabled: true
+    auto-startup: true
+    swagger-ui:
+      enabled: true
+    open-api:
+      enabled: true

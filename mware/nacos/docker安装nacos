@@ -1,0 +1,26 @@
+docker pull nacos/nacos-server:version
+
+//单机 启动  -e MODE=standalone
+docker run -d --name nacos-standalone -p 8848:8848 \
+  -e PREFER_HOST_MODE=192.168.3.122 \
+  -e NACOS_SERVER_IP=192.168.3.122 \
+  -e MODE=standalone \
+  -e SPRING_DATASOURCE_PLATFORM=mysql \
+  -e MYSQL_SERVICE_HOST=192.168.3.122 \
+  -e MYSQL_SERVICE_DB_NAME=nacos \
+  -e MYSQL_SERVICE_USER=test \
+  -e MYSQL_SERVICE_PASSWORD=Root@123 \
+  -e MYSQL_DATABASE_NUM=1 \
+  nacos/nacos-server:latest
+
+// 集群
+docker run -d --name nacos-cluster -p 8848:8848 \
+  -e NACOS_SERVERS=192.168.2.122,192.168.2.123 \
+  -e NACOS_SERVER_IP=192.168.3.122 \
+  -e SPRING_DATASOURCE_PLATFORM=mysql \
+  -e MYSQL_SERVICE_HOST=192.168.3.122 \
+  -e MYSQL_SERVICE_DB_NAME=nacos \
+  -e MYSQL_SERVICE_USER=test \
+  -e MYSQL_SERVICE_PASSWORD=Root@123 \
+  -e MYSQL_DATABASE_NUM=1 \
+  nacos/nacos-server:version

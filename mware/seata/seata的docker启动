@@ -1,0 +1,19 @@
+使用docker的启动需要配置好seata/conf/registry.conf，然后在启动容器时，把该配置文件挂在到SEATA_CONFIG_NAME
+1.获取docker镜像版本：1.4.2
+docker pull seataio/seata-server:1.4.2
+2.启动挂在配置文件registry.conf
+ -e SEATA_CONFIG_NAME=file:/root/seata-config/registry \
+ -v /User/seata/config:/root/seata-config  \
+3.docker run
+
+docker run -d  --name seata-server \
+        -h 192.168.3.122 \
+        -p 8091:8091 \
+        -e SEATA_IP=192.168.3.122 \
+        -e SEATA_PORT=8091 \
+        -e SEATA_CONFIG_NAME=file:/root/seata-config/registry \
+        -v /Users/hcj/IdeaProjects/sc-dev-1/mware/seata/conf:/root/seata-config  \
+        seataio/seata-server:1.4.2
+
+注：-v /Users/hcj/IdeaProjects/sc-dev-1/mware/seata/conf 是seata的registry.conf文件路径，需要挂载到容器里
+    1.4.2的-e SEATA_IP=192.168.3.122 不起作用

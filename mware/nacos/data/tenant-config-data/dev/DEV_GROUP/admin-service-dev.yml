@@ -1,0 +1,22 @@
+server:
+  port: 8670
+logging:
+  file:
+    name: ../sc-dev/logs/${spring.application.name}/${spring.application.name}.log
+    path: ../sc-dev/logs/${spring.application.name}
+  level:
+    org.springframework: info
+    com.ifeb2: debug
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+spring:
+  security:
+    user:
+      password: admin
+      name: admin

@@ -1,0 +1,95 @@
+server:
+  port: 8500
+  error:
+    include-message: always
+spring:
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: admin
+    password: admin
+  sleuth:
+    sampler:
+      # 采样率的概率，100%采样
+      probability: 1.0
+      # 每秒采样数字最高为1000
+      rate: 1000
+  zipkin:
+    sender:
+      type: rabbit
+    rabbitmq:
+      addresses: 127.0.0.1:5672
+      queue: zipkin
+    base-url: http://localhost:9411/
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+            - name: RequestRateLimiter
+              args:
+                rate-limiter: "#{@authServiceRateLimiter}"
+                key-resolver: "#{@remoteHostLimiterKey}"
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/user/**
+          filters:
+            - StripPrefix=1
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 10
+        - id: file-service
+          uri: lb://file-service
+          predicates:
+            - Path=/file/**
+          filters:
+            - StripPrefix=1
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins:
+              - "http://localhost:3000"
+              - "https://www.ifeb2.com"
+            expose-headers: "*"
+            allowed-methods: "*"
+            allow-credentials: true
+            allowed-headers: "*"
+            max-age: 2000
+    loadbalancer:
+      cache:
+        enabled: true
+#### admin-client
+  boot:
+    admin:
+      client:
+        username: admin
+        password: admin
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+logging:
+  level:
+    org.springframework: info
+    com.ifeb2: debug
+  file:
+    path: ../sc-dev/logs/${spring.application.name}
+    name: ../sc-dev/logs/${spring.application.name}/${spring.application.name}.log

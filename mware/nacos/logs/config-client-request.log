@@ -1,0 +1,6 @@
+2022-05-14 23:59:09,233|7|null|192.168.3.122|get|seata.properties|SEATA_GROUP|dev|5aff05605536b27874fb2510fbf09573|unknown
+2022-05-14 23:59:09,250|0|nohangup|192.168.3.122|polling|1|66|0
+2022-05-14 23:59:09,344|0|null|192.168.3.122|get|store.file.sessionReloadReadSize|SEATA_GROUP|dev||unknown
+2022-05-14 23:59:09,391|1|null|192.168.3.122|get|store.publicKey|SEATA_GROUP|dev||unknown
+2022-05-14 23:59:09,808|0|null|192.168.3.122|get|server.enableCheckAuth|SEATA_GROUP|dev||unknown
+2022-05-14 23:59:38,955|29503|timeout|192.168.3.122|polling|1|66
