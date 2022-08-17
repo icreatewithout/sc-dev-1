@@ -10,10 +10,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Slf4j
@@ -57,25 +56,28 @@ public class WebConfigurer implements WebMvcConfigurer {
     @Bean
     public InstanceExchangeFilterFunction auditLog() {
         return (instance, request, next) -> next.exchange(request).doOnSubscribe((s) -> {
-            log.info("url :{}", request.url());
-            log.info("header: {}", request.headers().get(HttpHeaders.AUTHORIZATION).get(0));
+            log.info("request url :{}", request.url());
+            log.info("header token: {}", request.headers().get(HttpHeaders.AUTHORIZATION).get(0));
+            log.info("request status :{}", instance.getStatusInfo().getStatus());
+        }).doOnSuccess(response -> {
+            log.info("response statusCode :{}", response.statusCode().value());
+            //TODO 判断某个注册的服务返回401时，删除token缓存，表示重新获取token
+            if (instance.getRegistration().getName().equals("user-service")
+                    && response.statusCode().value() == HttpStatus.UNAUTHORIZED.value()) {
+                redisTemplate.delete("sba_token");
+            }
         });
     }
 
-    @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration());
-        return new CorsFilter(source);
+    @Override
+    public void addCorsMappings(CorsRegistry corsRegistry){
+        corsRegistry.addMapping("/**")
+                .allowCredentials(true)
+                .allowedOriginPatterns("*")
+                .allowedMethods("*")
+                .allowedHeaders("*")
+                .maxAge(3600);
     }
 
-    private CorsConfiguration configuration() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOriginPattern("*");
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("*");
-        configuration.setAllowCredentials(true);
-        return configuration;
-    }
 
 }

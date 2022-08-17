@@ -22,16 +22,17 @@ public class GwGlobalFilter implements GlobalFilter, Ordered {
     private final static String AUTH_HEADER = HttpHeaders.AUTHORIZATION.toLowerCase(Locale.ROOT);
 
     private final static String SECRET_KEY = "secret_key";
+    private final static String SECRET_KEY_VAL = "test";
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         HttpHeaders header = request.getHeaders();
 
-        log.info("请求URI:{}", request.getPath());
+        log.info("请求URI:{}", request.getURI());
 
         ServerHttpRequest.Builder mutate = request.mutate();
-        mutate.header(SECRET_KEY, "test");
+        mutate.header(SECRET_KEY, SECRET_KEY_VAL);
 
         if (StrUtil.isNotBlank(header.getFirst(AUTH_HEADER))) {
             mutate.header(AUTH_HEADER, header.getFirst(AUTH_HEADER));
