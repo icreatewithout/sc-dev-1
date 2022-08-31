@@ -31,3 +31,43 @@ spring:
         config-retry-time: 2000
         max-retry: 3
         refresh-enabled: true
+  jpa:
+    database: mysql
+    show-sql: true
+    generate-ddl: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.format_sql: true
+      hibernate.show_sql: true
+  shardingsphere:
+    datasource:
+      names: ds
+      ds:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/sc-test?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+        username: root
+        password: root
+        max-active: 16
+    rules:
+      sharding:
+        default-sharding-column: id
+        sharding-algorithms:
+          sc-sds-test-inline:
+            type: INLINE
+            props:
+              algorithm-expression: sc_sds_test_$->{id % 2}
+        tables:
+#          表名
+          sc_sds_test:
+#           拆分成几张表
+            actual-data-nodes: ds.sc_sds_test_$->{0..1}
+            table-strategy:
+              standard:
+#               拆分字段
+                sharding-column: id
+#                拆分算法
+                sharding-algorithm-name: sc-sds-test-inline
+
